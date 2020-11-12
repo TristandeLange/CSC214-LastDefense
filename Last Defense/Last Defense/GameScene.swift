@@ -9,10 +9,13 @@
 import SpriteKit
 import GameplayKit
 
-class GameScene: SKScene, SKPhysicsContactDelegate {
+class GameScene: SKScene {
     
-    var tempBool = true;
-    var gameOver = true
+    
+    var loseFlag = false;
+    var timer = 0;
+    var gameOver = true;
+    var spikePos = 1
     var spike = SKSpriteNode()
     var circle = SKSpriteNode()
     var barrier = SKSpriteNode()
@@ -24,7 +27,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
-
+    func randomNum() -> Int
+    {
+        let x = Int.random(in: 1...4)
+        return x
+    }
     
     override func didMove(to view: SKView) {
         physicsWorld.contactDelegate = self
@@ -40,25 +47,120 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-       if gameOver == true {
-                  for touch in touches {
-                      let location = touch.location(in: self)
-                      if startBtn.contains(location) {
-                          startGame()
-                      }
-                  }
-              } else {
-                  //functionality for moving the spike
-              }
+            for touch in touches
+            {
+                let location = touch.location(in: self)
+                if startBtn.contains(location)&&(!startBtn.isHidden)
+                {
+                    startGame()
+                    startBtn.isHidden = true
+                }
+                else if(location.x < self.frame.width/2)
+                {
+                    leftTap()
+                }
+                else {
+                    rightTap()
+                }
+            }
+            
+    }
+    
+    
+
+    func rightTap()
+    {
+        
+        let eastPoint = CGPoint(x: frame.width * 0.65, y: frame.height * 0.5) //1
+        let southPoint = CGPoint(x: frame.width * 0.5, y: frame.height * 0.40) //2
+        let westPoint = CGPoint(x: frame.width * 0.35, y: frame.height * 0.5) //3
+        let northPoint = CGPoint(x: frame.width * 0.5, y: frame.height * 0.60)//4
+        
+        
+        
+        switch spikePos {
+        case 1:
+            spike.position = southPoint
+            spikePos=2
+            spike.zRotation = .pi
+            break
+        case 2:
+            spike.position = westPoint
+            spikePos=3
+            spike.zRotation = (.pi/2)*(1)
+            break
+        case 3:
+            spike.position = northPoint
+            spikePos=4
+            spike.zRotation = 0
+            break
+        case 4:
+            spike.position = eastPoint
+            spikePos=1
+            spike.zRotation = (.pi/2)*(-1)
+            
+            break
+        default:
+            print("default")
+            spike.position = southPoint
+            spikePos=2
+            spike.zRotation = .pi
+           
+        }
+    }
+    
+    
+    func leftTap()
+    {
+        
+        let eastPoint = CGPoint(x: frame.width * 0.65, y: frame.height * 0.5)//1
+        let southPoint = CGPoint(x: frame.width * 0.5, y: frame.height * 0.40)//2
+        let westPoint = CGPoint(x: frame.width * 0.35, y: frame.height * 0.5)//3
+        let northPoint = CGPoint(x: frame.width * 0.5, y: frame.height * 0.60)//4
+        
+        switch spikePos {
+        case 1:
+            spike.position = northPoint
+            spikePos=4
+            spike.zRotation = 0
+            break
+        case 2:
+            spike.position = eastPoint
+            spikePos=1
+            spike.zRotation = (.pi/2)*(-1)
+            break
+        case 3:
+            spike.position = southPoint
+            spikePos=2
+            spike.zRotation = .pi
+            break
+        case 4:
+            spike.position = westPoint
+            spikePos=3
+            spike.zRotation = (.pi/2)*(1)
+            break
+        default:
+            print("default")
+            spike.position = southPoint
+            spike.zRotation = .pi
+            spikePos=2
+        }
         
     }
-
-    
     
     override func update(_ currentTime: TimeInterval) {
-        if !gameOver && tempBool {
-            tempBool=false
-            stopGame()
+        
+        
+//        if ((!gameOver)&&(loseFlag)) {
+//            loseFlag=false
+//            stopGame()
+//
+//        }
+        
+        timer = timer+1
+        if  ((timer >= 150) && (!gameOver)){
+            timer=0
+            makeBarrier(position: randomNum())
             
         }
     }
@@ -71,13 +173,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         spike = makeSpike()
         circle = makeCircle()
-        barrier = makeBarrier(position: CGPoint(x: 10, y: 10))
+        
     }
     
     func stopGame() {
         gameOver = true
         removeAllActions()
+        spike.removeFromParent()
+        circle.removeFromParent()
+        barrier.removeFromParent()
         
+        startBtn.isHidden = false
+        makeStartBtn()
 //        if let splat = SKEmitterNode(fileNamed: "splat") {
 //            splat.position = wasp.position
 //            wasp.removeFromParent()
@@ -87,6 +194,26 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 //        run(sndSplat) { self.standby() }
         
     }
+}
     
+extension GameScene: SKPhysicsContactDelegate {
+        
+    func didBegin(_ contact: SKPhysicsContact) {
+        if contact.bodyA.node?.name == "circle" || contact.bodyB.node?.name == "circle" {
+            
+            stopGame()
+        } else
+        if contact.bodyA.node?.name == "barrier" || contact.bodyB.node?.name == "barrier" {
+            if contact.bodyA.node ==  spike {
+                contact.bodyB.node?.removeFromParent()
+            } else {
+                contact.bodyA.node?.removeFromParent()
+            }
+            
+            score += 1
+        }
+    }
     
 }
+    
+
