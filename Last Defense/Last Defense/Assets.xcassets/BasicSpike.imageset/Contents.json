@@ -1,12 +1,11 @@
 {
   "images" : [
     {
-      "filename" : "basicSpike.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "basicSpike-1.png",
+      "filename" : "spike.png",
       "idiom" : "universal",
       "scale" : "2x"
     },

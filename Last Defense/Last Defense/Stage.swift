@@ -49,7 +49,7 @@ extension GameScene
         
         spike.physicsBody = SKPhysicsBody(texture: spikeTexture, size: spikeTexture.size())
         spike.physicsBody!.contactTestBitMask = spike.physicsBody!.collisionBitMask
-        spike.physicsBody?.isDynamic = true
+        spike.physicsBody?.isDynamic = false
         spike.physicsBody?.allowsRotation = false
         
         
@@ -75,7 +75,7 @@ extension GameScene
         
         let xdistance = self.frame.width/2
         let ydistance = self.frame.height/2
-        var moveGap: SKAction
+        var move: SKAction
         
         let eastPoint = CGPoint(x: frame.width * 0.95, y: frame.height * 0.5)//1
         let southPoint = CGPoint(x: frame.width * 0.5, y: frame.height * 0.05)//2
@@ -86,32 +86,43 @@ extension GameScene
         case 1:
             barrier.position = northPoint
             barrier.zRotation = 0
-            moveGap = SKAction.moveBy(x: 0, y: -ydistance, duration: TimeInterval((0.004 * ydistance)))
+            move = SKAction.moveBy(x: 0, y: -ydistance, duration: TimeInterval((0.004 * ydistance)))
             break
         case 2:
             barrier.position = eastPoint
             barrier.zRotation = (.pi/2)*(-1)
-            moveGap = SKAction.moveBy(x: -xdistance, y: 0, duration: TimeInterval((0.004 * ydistance )))
+            move = SKAction.moveBy(x: -xdistance, y: 0, duration: TimeInterval((0.004 * ydistance )))
             break
         case 3:
             barrier.position = southPoint
             barrier.zRotation = .pi
-            moveGap = SKAction.moveBy(x: 0, y:ydistance, duration: TimeInterval((0.004 * ydistance)))
+            move = SKAction.moveBy(x: 0, y:ydistance, duration: TimeInterval((0.004 * ydistance)))
             break
         case 4:
             barrier.position = westPoint
             barrier.zRotation = (.pi/2)*(1)
-            moveGap = SKAction.moveBy(x: xdistance, y: 0, duration: TimeInterval((0.004 * ydistance)))
+            move = SKAction.moveBy(x: xdistance, y: 0, duration: TimeInterval((0.004 * ydistance)))
             break
         default:
             print("default")
             barrier.position = southPoint
             barrier.zRotation = .pi
-            moveGap = SKAction.moveBy(x: 0, y: 0, duration: TimeInterval((0.001 * ydistance)))
+            move = SKAction.moveBy(x: 0, y: 0, duration: TimeInterval((0.001 * ydistance)))
             
         }
         
-        barrier.run(moveGap)
+        let anim = SKAction.animate(with: [
+            SKTexture(imageNamed: "evilProjectile1"),
+            SKTexture(imageNamed: "evilProjectile2"),
+            SKTexture(imageNamed: "evilProjectile3"),
+            SKTexture(imageNamed: "evilProjectile4"),
+            SKTexture(imageNamed: "evilProjectile5"),
+            SKTexture(imageNamed: "evilProjectile6")], timePerFrame: 0.1)
+        let forever = SKAction.repeatForever(anim)
+        
+        
+        barrier.run(forever)
+        barrier.run(move)
         return barrier
     }
     

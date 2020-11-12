@@ -199,11 +199,12 @@ extension GameScene: SKPhysicsContactDelegate {
         if contact.bodyA.node?.name == "barrier" || contact.bodyB.node?.name == "barrier" {
             if contact.bodyA.node ==  spike {
                 contact.bodyB.node?.removeFromParent()
+                score += 1
             } else {
                 contact.bodyA.node?.removeFromParent()
             }
             
-            score += 1
+            
         }
     }
     
