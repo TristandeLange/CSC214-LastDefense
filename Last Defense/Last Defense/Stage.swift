@@ -86,28 +86,28 @@ extension GameScene
         case 1:
             barrier.position = northPoint
             barrier.zRotation = 0
-            move = SKAction.moveBy(x: 0, y: -ydistance, duration: TimeInterval((0.004 * ydistance)))
+            move = SKAction.moveBy(x: 0, y: -ydistance, duration: TimeInterval((0.003 * ydistance)))
             break
         case 2:
             barrier.position = eastPoint
             barrier.zRotation = (.pi/2)*(-1)
-            move = SKAction.moveBy(x: -xdistance, y: 0, duration: TimeInterval((0.004 * ydistance )))
+            move = SKAction.moveBy(x: -xdistance, y: 0, duration: TimeInterval((0.003 * ydistance )))
             break
         case 3:
             barrier.position = southPoint
             barrier.zRotation = .pi
-            move = SKAction.moveBy(x: 0, y:ydistance, duration: TimeInterval((0.004 * ydistance)))
+            move = SKAction.moveBy(x: 0, y:ydistance, duration: TimeInterval((0.003 * ydistance)))
             break
         case 4:
             barrier.position = westPoint
             barrier.zRotation = (.pi/2)*(1)
-            move = SKAction.moveBy(x: xdistance, y: 0, duration: TimeInterval((0.004 * ydistance)))
+            move = SKAction.moveBy(x: xdistance, y: 0, duration: TimeInterval((0.003 * ydistance)))
             break
         default:
             print("default")
             barrier.position = southPoint
             barrier.zRotation = .pi
-            move = SKAction.moveBy(x: 0, y: 0, duration: TimeInterval((0.001 * ydistance)))
+            move = SKAction.moveBy(x: 0, y: 0, duration: TimeInterval((0.003 * ydistance)))
             
         }
         
