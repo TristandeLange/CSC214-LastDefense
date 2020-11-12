@@ -152,13 +152,6 @@ class GameScene: SKScene {
     
     override func update(_ currentTime: TimeInterval) {
         
-        
-//        if ((!gameOver)&&(loseFlag)) {
-//            loseFlag=false
-//            stopGame()
-//
-//        }
-        
         timer = timer+1
         if  ((timer >= 150) && (!gameOver))
         {
