@@ -72,6 +72,7 @@ extension GameScene
         
         addChild(barrier)
         
+        
         let xdistance = self.frame.width/2
         let ydistance = self.frame.height/2
         var moveGap: SKAction
@@ -85,28 +86,29 @@ extension GameScene
         case 1:
             barrier.position = northPoint
             barrier.zRotation = 0
-            moveGap = SKAction.moveBy(x: 0, y: -ydistance, duration: TimeInterval(0.004 * ydistance))
+            moveGap = SKAction.moveBy(x: 0, y: -ydistance, duration: TimeInterval((0.004 * ydistance)))
             break
         case 2:
             barrier.position = eastPoint
             barrier.zRotation = (.pi/2)*(-1)
-            moveGap = SKAction.moveBy(x: -xdistance, y: 0, duration: TimeInterval(0.004 * ydistance))
+            moveGap = SKAction.moveBy(x: -xdistance, y: 0, duration: TimeInterval((0.004 * ydistance )))
             break
         case 3:
             barrier.position = southPoint
             barrier.zRotation = .pi
-            moveGap = SKAction.moveBy(x: 0, y:ydistance, duration: TimeInterval(0.004 * ydistance))
+            moveGap = SKAction.moveBy(x: 0, y:ydistance, duration: TimeInterval((0.004 * ydistance)))
             break
         case 4:
             barrier.position = westPoint
             barrier.zRotation = (.pi/2)*(1)
-            moveGap = SKAction.moveBy(x: xdistance, y: 0, duration: TimeInterval(0.004 * ydistance))
+            moveGap = SKAction.moveBy(x: xdistance, y: 0, duration: TimeInterval((0.004 * ydistance)))
             break
         default:
             print("default")
             barrier.position = southPoint
             barrier.zRotation = .pi
-            moveGap = SKAction.moveBy(x: 0, y: 0, duration: TimeInterval(0.001 * ydistance))
+            moveGap = SKAction.moveBy(x: 0, y: 0, duration: TimeInterval((0.001 * ydistance)))
+            
         }
         
         barrier.run(moveGap)
@@ -123,6 +125,17 @@ extension GameScene
         addChild(scoreLabel)
     }
     
+    func makeHighScoreLabel()
+    {
+        hsLabel = SKLabelNode()
+        hsLabel.position = CGPoint(x: self.frame.width * 0.5, y: self.frame.height * 0.6)
+        hsLabel.fontName = "Marker Felt Wide"
+        hsLabel.fontColor = UIColor.systemYellow
+        hsLabel.fontSize = 94
+        hsLabel.zPosition = 10
+        hsLabel.text = "High Score: " + String(highscore.load())
+        addChild(hsLabel)
     
+    }
     
 }

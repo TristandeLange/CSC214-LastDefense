@@ -12,6 +12,8 @@ import GameplayKit
 class GameScene: SKScene {
     
     
+    let highscore = HighScore()
+    var hsLabel = SKLabelNode()
     var loseFlag = false;
     var timer = 0;
     var gameOver = true;
@@ -158,15 +160,18 @@ class GameScene: SKScene {
 //        }
         
         timer = timer+1
-        if  ((timer >= 150) && (!gameOver)){
+        if  ((timer >= 150) && (!gameOver))
+        {
             timer=0
-            makeBarrier(position: randomNum())
+            barrier = makeBarrier(position: randomNum())
             
         }
     }
     
     
     func startGame() {
+        
+        hsLabel.removeFromParent()
         score = 0
         gameOver = false
         startBtn.removeFromParent()
@@ -185,13 +190,8 @@ class GameScene: SKScene {
         
         startBtn.isHidden = false
         makeStartBtn()
-//        if let splat = SKEmitterNode(fileNamed: "splat") {
-//            splat.position = wasp.position
-//            wasp.removeFromParent()
-//            addChild(splat)
-//        }
-        
-//        run(sndSplat) { self.standby() }
+        highscore.save(data: score)
+        makeHighScoreLabel()
         
     }
 }
