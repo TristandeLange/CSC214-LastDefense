@@ -163,10 +163,12 @@ class GameScene: SKScene {
     
     
     func startGame() {
-        
+        removeAllChildren()
+        makeScoreLabel()
         hsLabel.removeFromParent()
         score = 0
         gameOver = false
+        loseFlag = false
         startBtn.removeFromParent()
         
         spike = makeSpike()
@@ -175,7 +177,9 @@ class GameScene: SKScene {
     }
     
     func stopGame() {
+        loseFlag=true
         gameOver = true
+        
         removeAllActions()
         spike.removeFromParent()
         circle.removeFromParent()
