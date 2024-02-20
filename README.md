@@ -1,4 +1,4 @@
-\f0\b\fs24 \cf0 Hackathon READEME\
+cf0 Hackathon READEME\
 Team Name: One Down\
 Product: Last Defense\
 \
